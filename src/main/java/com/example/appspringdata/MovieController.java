@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,11 +36,13 @@ public class MovieController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
     Movie save(@RequestBody Movie movie) {
         return movieRepo.save(movie);
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     void delete(@RequestParam String movieId) {
         movieRepo.deleteById(movieId);
         System.out.println("Deleted movie with movieId: " + movieId);
@@ -56,13 +59,16 @@ public class MovieController {
     }
 
     @GetMapping("/movielist")
+    @PreAuthorize("hasRole('ADMIN')")
     Iterable<MovieProjection> findAllMovieProjections() { return movieRepo.findAllMovieProjectionsBy(); }
 
     @PutMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     String updateMovie(@RequestBody Movie movie) {
         return movieService.updateMovie(movie);
     }
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     String addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
