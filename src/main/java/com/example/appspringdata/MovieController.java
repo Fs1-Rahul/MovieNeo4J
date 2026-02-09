@@ -31,18 +31,18 @@ public class MovieController {
     }
 
     @GetMapping("/{movieId}")
+    @PreAuthorize("hasRole('ADMIN')")
     Movie findMovieById(@PathVariable String movieId) {
         return movieService.getMovie(movieId);
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ADMIN')")
+
     Movie save(@RequestBody Movie movie) {
         return movieRepo.save(movie);
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasRole('ADMIN')")
     void delete(@RequestParam String movieId) {
         movieRepo.deleteById(movieId);
         System.out.println("Deleted movie with movieId: " + movieId);
@@ -59,16 +59,16 @@ public class MovieController {
     }
 
     @GetMapping("/movielist")
-    @PreAuthorize("hasRole('ADMIN')")
+
     Iterable<MovieProjection> findAllMovieProjections() { return movieRepo.findAllMovieProjectionsBy(); }
 
     @PutMapping("/update")
-    @PreAuthorize("hasRole('ADMIN')")
+
     String updateMovie(@RequestBody Movie movie) {
         return movieService.updateMovie(movie);
     }
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ADMIN')")
+
     String addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
